@@ -4,7 +4,7 @@ DOCKER_BUILD := ${DOCKER_BUILD_VARS} docker build
 COMPOSE := $(DOCKER_BUILD_VARS) docker-compose
 
 .env:
-	cp .env.dist app/.env
+	cp .env.dist .env
 
 build:
 	${COMPOSE} pull --ignore-pull-failures --include-deps
@@ -24,3 +24,8 @@ destroy: stop
 
 bash:
 	${COMPOSE} run php bash
+
+database:
+	php bin/console make:migration
+	php bin/console doctrine:migrations:migrate
+	php bin/console doctrine:fixtures:load
